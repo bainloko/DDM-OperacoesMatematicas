@@ -5,7 +5,7 @@
 */
 
 import * as React from 'react';
-import {Text, TouchableOpacity, TextInput, View, StyleSheet, StatusBar} from 'react-native';
+import {View, StatusBar, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 
 export default class App extends React.Component {
   state = {
@@ -24,71 +24,120 @@ export default class App extends React.Component {
   
   somar(){
     this.state.resultado = parseFloat(this.state.valor1) + parseFloat(this.state.valor2);
-    alert(this.state.resultado);
+    document.getElementById("resultado").innerHTML = ("O resultado desta soma é " + roundAccurately(this.state.resultado, 3));
   }
 
   subtrair(){
     this.state.resultado = parseFloat(this.state.valor1) - parseFloat(this.state.valor2);
-    alert(this.state.resultado);
+    document.getElementById("resultado").innerHTML = ("O resultado desta subtração é " + roundAccurately(this.state.resultado, 3));
   }
 
   multiplicar(){
     this.state.resultado = parseFloat(this.state.valor1) * parseFloat(this.state.valor2);
-    alert(this.state.resultado);
+    document.getElementById("resultado").innerHTML = ("O resultado desta multiplicação é " + roundAccurately(this.state.resultado, 3));
   }
 
   dividir(){
     this.state.resultado = parseFloat(this.state.valor1) / parseFloat(this.state.valor2);
-    alert(this.state.resultado);
+    document.getElementById("resultado").innerHTML = ("O resultado desta divisão é " + roundAccurately(this.state.resultado, 3));
   }
 
   render(){
     return(
       <View style={meuEstilo.container}>
         <StatusBar />
-        <Text>Operações Matemáticas...</Text>
+        <Text style={meuEstilo.textoInicial}><span>Operações Matemáticas...</span></Text>
         <TextInput style={meuEstilo.inputExemplo} underlineColorAndroid="transparent" placeholder="Digite o primeiro valor" autoCapitalize="none" onChangeText={this.atualizaValor1} keyboardType="numeric" />
-        <TextInput style={meuEstilo.inputExemplo} underlineColorAndroid="transparent" placeholder="Digite o segundo valor" autoCapitalize="none" onChangeText={this.atualizaValor2} keyboardType="numeric" /> 
-        <TouchableOpacity onPress={()=>this.somar(this.state.valor1, this.state.valor2, this.state.resultado)}>
+        <TextInput style={meuEstilo.inputExemplo2} underlineColorAndroid="transparent" placeholder="Digite o segundo valor" autoCapitalize="none" onChangeText={this.atualizaValor2} keyboardType="numeric" /> 
+        <Text style={meuEstilo.textoResultado}><span id="resultado"></span></Text>
+        <Text style={meuEstilo.textoHr}><hr /></Text>
+        <Pressable style={meuEstilo.botaoExemplo} onPress={()=>this.somar(this.state.valor1, this.state.valor2, this.state.resultado)}>
           <Text style={meuEstilo.fonteExemplo}>Somar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>this.subtrair(this.state.valor1, this.state.valor2, this.state.resultado)}>
+        </Pressable>
+        <Pressable style={meuEstilo.botaoExemplo} onPress={()=>this.subtrair(this.state.valor1, this.state.valor2, this.state.resultado)}>
           <Text style={meuEstilo.fonteExemplo}>Subtrair</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>this.multiplicar(this.state.valor1, this.state.valor2, this.state.resultado)}>
+        </Pressable>
+        <Pressable style={meuEstilo.botaoExemplo} onPress={()=>this.multiplicar(this.state.valor1, this.state.valor2, this.state.resultado)}>
           <Text style={meuEstilo.fonteExemplo}>Multiplicar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={()=>this.dividir(this.state.valor1, this.state.valor2, this.state.resultado)}>
+        </Pressable>
+        <Pressable style={meuEstilo.botaoExemplo} onPress={()=>this.dividir(this.state.valor1, this.state.valor2, this.state.resultado)}>
           <Text style={meuEstilo.fonteExemplo}>Dividir</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
-    )
+    );
   }
 }
 
 /** 
-* como fazer as operações (funções) fora da classe?
-* como chamar os valores como argumentos, uma vez que estão tipados na classe?
-* como verificar erros na entrada de dados? (letras, caracteres especiais no lugar dos números...) - como inserir try catch ...
-* como colocar os botões um ao lado do outro? inline-block ou ...
-* como fazer uma interface de app de verdade? ideias behance ou aguardar próximas aulas
+* como fazer as operações (funções) fora da classe? R = importar arquivo com as funções e chamá-las em qualquer lugar do código. "import funcaoA from './funcaoA'"
+* como verificar erros na entrada de dados? (letras, caracteres especiais no lugar dos números...) - como inserir try catch? R = TypeScript... muito complicado
+* como colocar os botões um ao lado do outro? como fazer uma interface de app de verdade? R = ideias (https://www.instamobile.io/react-native-tutorials/best-free-react-native-app-templates-2018/) behance ou aguardar próximas aulas
 */
 
 const meuEstilo = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+  },
+
+  textoInicial: {
+    marginBottom: 10,
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 21,
+    letterSpacing: 0.25,
   },
 
   inputExemplo: {
+    marginTop: 5,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     border: '1px solid black',
-    marginTop: 2
+    borderRadius: 4,
+    elevation: 3,
+  },
+
+  inputExemplo2: {
+    marginTop: 5,
+    marginBottom: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    border: '1px solid black',
+    borderRadius: 4,
+    elevation: 3,
+  },
+
+  textoResultado: {
+    paddingVertical: 3,
+    color: 'black',
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+  },
+
+  textoHr: {
+    width: 200,
+  },
+
+  botaoExemplo: {
+    backgroundColor: 'black',
+    marginTop: 5,
+    paddingVertical: 12,
+    width: 110,
+    textAlign: 'center',
+    borderRadius: 4,
+    elevation: 3,
   },
 
   fonteExemplo: {
-    color: 'blue',
-    fontSize: 15
-  }
+    color: 'white',
+    fontSize: 16,
+    lineHeight: 21,
+    letterSpacing: 0.25,
+  },
 });
+
+const roundAccurately = (number, decimalPlaces) => Number(Math.round(number + "e" + decimalPlaces) + "e-" + decimalPlaces); //code courtesy of Jack Moore https://www.jacklmoore.com/notes/rounding-in-javascript/ - in this case, I'll set the decimal places to a constant three, which is fine for me' applications. thanks m8 HUAHUEAHUAEUH
